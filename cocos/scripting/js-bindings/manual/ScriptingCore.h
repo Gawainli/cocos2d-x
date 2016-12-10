@@ -1,7 +1,7 @@
 /*
  * Created by Rolando Abarca on 3/14/12.
  * Copyright (c) 2012 Zynga Inc. All rights reserved.
- * Copyright (c) 2013-2014 Chukong Technologies Inc.
+ * Copyright (c) 2013-2016 Chukong Technologies Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,6 +39,7 @@
 
 #include <assert.h>
 #include <memory>
+#include <chrono>
 
 #define ENGINE_VERSION "Cocos2d-JS v3.13"
 
@@ -89,6 +90,8 @@ private:
 
     bool _callFromScript;
     ScriptingCore();
+
+	std::chrono::steady_clock::time_point _engineStartTime;
 public:
     ~ScriptingCore();
 
@@ -349,6 +352,11 @@ public:
      * Clean all script objects
      */
     void cleanAllScript();
+
+	/**@~english
+	* Gets the time that the ScriptingCore was initalized
+	*/
+	std::chrono::steady_clock::time_point getEngineStartTime() const;
     
     /**@~english
      * Initialize everything, including the js context, js global object etc.
@@ -561,9 +569,8 @@ bool jsb_get_reserved_slot(JSObject *obj, uint32_t idx, jsval& ret);
 template <class T>
 js_type_class_t *jsb_register_class(JSContext *cx, JSClass *jsClass, JS::HandleObject proto, JS::HandleObject parentProto)
 {
-    TypeTest<T> t;
     js_type_class_t *p = nullptr;
-    std::string typeName = t.s_name();
+    std::string typeName = TypeTest<T>::s_name();
     if (_js_global_type_map.find(typeName) == _js_global_type_map.end())
     {
         JS::RootedObject protoRoot(cx, proto);

@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2014 Chukong Technologies Inc.
+ Copyright (c) 2013-2016 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -141,6 +141,11 @@ void UIEditBoxTest::editBoxEditingDidBegin(cocos2d::ui::EditBox* editBox)
 void UIEditBoxTest::editBoxEditingDidEnd(cocos2d::ui::EditBox* editBox)
 {
     log("editBox %p DidEnd !", editBox);
+}
+
+void UIEditBoxTest::editBoxEditingDidEndWithAction(cocos2d::ui::EditBox* editBox, cocos2d::ui::EditBoxDelegate::EditBoxEndAction action)
+{
+    log("editBox %p DidEnd with action %d!", editBox, action);
 }
 
 void UIEditBoxTest::editBoxTextChanged(cocos2d::ui::EditBox* editBox, const std::string& text)
